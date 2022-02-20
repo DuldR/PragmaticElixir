@@ -2,6 +2,12 @@ require Logger
 
 defmodule Servy.Handler do
 
+  @moduledoc "Handles HTTP requests"
+
+  @doc "Transforms oyur request into a response"
+
+  @pages_path Path.expand("../../pages", __DIR__)
+
   def handle(request) do
     request
     |> parse
@@ -28,6 +34,7 @@ defmodule Servy.Handler do
     conv
   end
 
+  @doc "Logs the requests"
   def track(conv), do: conv
 
   # Paths
@@ -118,7 +125,7 @@ defmodule Servy.Handler do
   # Omega Capture
 
   def route(%{ method: "GET", path: "/pages/" <> id } = conv) do
-    Path.expand("../../pages/", __DIR__)
+    @pages_path
     |> Path.join("#{id}" <> ".html")
     |> File.read
     |> handle_file(conv)
